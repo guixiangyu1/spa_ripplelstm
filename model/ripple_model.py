@@ -87,6 +87,7 @@ class RippleModel(BaseModel):
 
         """
         # perform padding of the given data
+        print(len(words))
         all_word_ids, all_char_ids, all_word_lengths = [], [], []
         for each_words in words:
             if self.config.use_chars:
