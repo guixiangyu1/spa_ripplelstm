@@ -91,6 +91,7 @@ class RippleModel(BaseModel):
         for each_words in words:
             if self.config.use_chars:
                 print(each_words)
+                print('\n')
                 char_ids, word_ids = zip(*each_words)  # zip参数要求是iterable即可(batch(sentence[char]))
                 word_ids, _ = pad_sequences(word_ids, 0)
                 char_ids, word_lengths = pad_sequences(char_ids, pad_tok=0,
