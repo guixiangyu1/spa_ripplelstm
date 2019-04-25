@@ -87,11 +87,10 @@ class RippleModel(BaseModel):
 
         """
         # perform padding of the given data
-        print(len(words))
         all_word_ids, all_char_ids, all_word_lengths = [], [], []
         for each_words in words:
             if self.config.use_chars:
-                print(len(each_words))
+                print(each_words)
                 char_ids, word_ids = zip(*each_words)  # zip参数要求是iterable即可(batch(sentence[char]))
                 word_ids, _ = pad_sequences(word_ids, 0)
                 char_ids, word_lengths = pad_sequences(char_ids, pad_tok=0,
