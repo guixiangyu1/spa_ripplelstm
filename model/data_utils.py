@@ -448,7 +448,7 @@ def minibatches(data, minibatch_size):
 
 
 
-def segment_data(dataset, idx2ac):
+def segment_data(dataset, idx2ac, max_size=None):
     '''
     把输入的一个batch的句子，转化成n多个可用的、符合nn网络的数据，用于训练
     :param all_words:
@@ -491,6 +491,16 @@ def segment_data(dataset, idx2ac):
             else:
                 bw_words = one_sent_words[fw_sequence_length + wd_sequence_length : ]
 
+            if max_size is not None:
+                if fw_sequence_length > max_size:
+                    fw_words = fw_words[:max_size]
+                    fw_sequence_length = max_size
+                    assert fw_sequence_length==len(fw_words)
+                if bw_sequence_length > max_size:
+                    bw_words = bw_words[:max_size]
+                    bw_sequence_length = max_size
+                    assert  bw_sequence_length==len(bw_words)
+
             data.append(((fw_words, wd_words, bw_words),
                          (fw_sequence_length, wd_sequence_length, bw_sequence_length),
                          ac))
@@ -507,6 +517,8 @@ def segment_data(dataset, idx2ac):
     #     fw_words = [zip(*sentence) for sentence in fw_words]
     #     wd_words = [zip(*sentence) for sentence in wd_words]
     #     bw_words = [zip(*sentence) for sentence in bw_words]
+
+
 
     return data
 

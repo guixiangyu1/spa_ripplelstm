@@ -26,7 +26,7 @@ def main():
     test = CoNLLDataset(config.filename_test, config.processing_word,
                        config.processing_action, config.max_iter)
 
-    train = segment_data(train, model.idx_to_action)
+    train = segment_data(train, model.idx_to_action, config.max_size)
 
     # train model
     model.train(train, dev, test)
