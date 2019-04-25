@@ -494,15 +494,22 @@ def segment_data(dataset, idx2ac, max_size=None):
             if max_size is not None:
                 if fw_sequence_length > max_size:
                     fw_words = fw_words[fw_sequence_length-max_size:]
-                    fw_sequence_length = max_size
-                    assert fw_sequence_length==len(fw_words)
+                    fw_l = max_size
+                    assert fw_l==len(fw_words)
+                else:
+                    fw_l = fw_sequence_length
                 if bw_sequence_length > max_size:
                     bw_words = bw_words[:max_size]
-                    bw_sequence_length = max_size
-                    assert  bw_sequence_length==len(bw_words)
+                    bw_l = max_size
+                    assert  bw_l==len(bw_words)
+                else:
+                    bw_l = bw_sequence_length
+            else:
+                fw_l = fw_sequence_length
+                bw_l = bw_sequence_length
 
             data.append(((fw_words, wd_words, bw_words),
-                         (fw_sequence_length, wd_sequence_length, bw_sequence_length),
+                         (fw_l, wd_sequence_length, bw_l),
                          ac))
 
             # refresh the fw wd bw length
