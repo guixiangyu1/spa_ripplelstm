@@ -493,7 +493,7 @@ def segment_data(dataset, idx2ac, max_size=None):
 
             if max_size is not None:
                 if fw_sequence_length > max_size:
-                    fw_words = fw_words[:max_size]
+                    fw_words = fw_words[fw_sequence_length-max_size:]
                     fw_sequence_length = max_size
                     assert fw_sequence_length==len(fw_words)
                 if bw_sequence_length > max_size:
