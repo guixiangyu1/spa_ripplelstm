@@ -445,7 +445,7 @@ class RippleModel(BaseModel):
                           for k, v in metrics.items()])
         self.logger.info(msg)
 
-        return metrics["f1"]
+        return metrics["acc"]
 
     def run_evaluate(self, test):
         """Evaluates performance on test set
