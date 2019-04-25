@@ -36,7 +36,7 @@ def main():
                         config.processing_action, config.max_iter)
 
     # train model
-    train = segment_data(train, model.idx_to_action)
+    train = segment_data(train, model.idx_to_action, config.max_size)
 
     model.train(train, dev, test)
 
