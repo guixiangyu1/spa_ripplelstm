@@ -460,26 +460,35 @@ class RippleModel(BaseModel):
         accs = []
         correct_preds, total_correct, total_preds = 0., 0., 0.
 
-        for words, actions in minibatches(test, self.config.batch_size):
-            actions_pred = self.predict_batch(words)
-            for act, act_pred in zip(actions, actions_pred):
-                accs += [a==b for (a,b) in zip(act, act_pred)]
+        with open("results/spa_wel_dyn.txt", "w") as f:
+            for words, actions in minibatches(test, self.config.batch_size):
+                actions_pred = self.predict_batch(words)
+                for act, act_pred in zip(actions, actions_pred):
+                    accs += [a == b for (a, b) in zip(act, act_pred)]
 
-                lab_chunks = set(get_chunks_from_act(act, self.idx_to_action))
-                lab_chunks_pred = set(get_chunks_from_act(act_pred, self.idx_to_action))
-                correct_preds += len(lab_chunks & lab_chunks_pred)
-                total_preds += len(lab_chunks_pred)
-                total_correct += len(lab_chunks)
-        p = correct_preds / total_preds if correct_preds > 0 else 0
-        r = correct_preds / total_correct if correct_preds > 0 else 0
-        f1 = 2 * p * r / (p + r) if correct_preds > 0 else 0
-        acc = np.mean(accs)
+                    lab_chunks = set(get_chunks_from_act(act, self.idx_to_action))
+                    lab_chunks_pred = set(get_chunks_from_act(act_pred, self.idx_to_action))
+                    correct_preds += len(lab_chunks & lab_chunks_pred)
+                    total_preds += len(lab_chunks_pred)
+                    total_correct += len(lab_chunks)
+
+                    for one_tag in act_pred:
+                        one_tag = self.idx_to_action[one_tag]
+                        f.write("{}\n".format(one_tag))
+                    f.write("\n")
+
+            p = correct_preds / total_preds if correct_preds > 0 else 0
+            r = correct_preds / total_correct if correct_preds > 0 else 0
+            f1 = 2 * p * r / (p + r) if correct_preds > 0 else 0
+            acc = np.mean(accs)
 
         print("correct_preds: ", correct_preds)
         print("total_preds: ", total_preds)
         print("total_correct: ", total_correct)
 
         return {"acc": 100 * acc, "precision": 100 * p, "recall": 100 * r, "f1": 100 * f1}
+
+
 
         #     for lab, lab_pred, length in zip(labels, labels_pred,
         #                                      sequence_lengths):
